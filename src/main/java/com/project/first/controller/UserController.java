@@ -21,7 +21,7 @@ public class UserController {
     @RequestMapping("/hello")
     @ResponseBody
     public String hello(){
-        return "I want AliceMaHan";
+        return "hello world";
     }
     @RequestMapping("/getOne")
     @ResponseBody

@@ -7,9 +7,11 @@ import java.util.List;
 
 @Mapper
 public interface WishMapper {
-    @Select("SELECT * from wish")
-    List<Wish> getAll();
-    @Select("")
+    @Select("select * from wish ORDER BY createTime limit #{count},8;")
+    List<Wish> getAll(int count);
+    @Select("SELECT count(1) from wish")
+    int countWishList();
+    @Select("select * from wish where id = #{id}")
     Wish getOne(String id);
     @Insert("insert into wish (id,title,content,sponsorId,sponsorName,createTime) values(#{id},#{title},#{content},#{sponsorId},#{sponsorName},#{createTime})")
     void insert(Wish wish);

@@ -1,32 +1,77 @@
-<!DOCTYPE HTML>
-<html xmlns:th="http://www.thymeleaf.org"
-      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+<!DOCTYPE html>
+<html xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
-    <meta charset="UTF-8"/>
-    <title>Basic DataGrid - jQuery EasyUI Demo</title>
-    <link rel="stylesheet" type="text/css" href="../jquery-easyui-1.5.3/themes/default/easyui.css"/>
-    <link rel="stylesheet" type="text/css" href="../jquery-easyui-1.5.3/themes/icon.css"/>
-    <link rel="stylesheet" type="text/css" href="../jquery-easyui-1.5.3/demo/demo.css"/>
-    <script type="text/javascript" src="../jquery-easyui-1.5.3/jquery.min.js"></script>
-    <script type="text/javascript" src="../jquery-easyui-1.5.3/jquery.easyui.min.js"></script>
+    <meta charset="utf-8"/>
+    <title>Bootstrap 实例 - 向列表组添加自定义内容</title>
+    <link rel="stylesheet" href="http://cdn.static.runoob.com/libs/bootstrap/3.3.7/css/bootstrap.min.css"/>
+    <link rel="stylesheet" type="text/css" href="http://sandbox.runjs.cn/uploads/rs/238/n8vhm36h/bootstrap.min.css"/>
+    <link rel="stylesheet" type="text/css" href="http://sandbox.runjs.cn/uploads/rs/238/n8vhm36h/bootstrap-responsiv.css"/>
+    <link rel="stylesheet" type="text/css" href="http://sandbox.runjs.cn/uploads/rs/238/n8vhm36h/dataTables.bootstra.css"/>
+    <script src="http://cdn.static.runoob.com/libs/jquery/2.1.1/jquery.min.js"></script>
+    <script src="http://cdn.static.runoob.com/libs/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 </head>
 <body>
-<h2>Basic DataGrid</h2>
-<p>The DataGrid is created from markup, no JavaScript code needed.</p>
-<div style="margin:20px 0;"></div>
+<form id="form" th:action="@{/index/main}">
+<div class="list-group">
+    <a th:href="@{/index/addWish(pageNumInt=${pageNumInt},wishCount=${wishCount})}" class="list-group-item active">
+        <h4 class="list-group-item-heading">
+            员工心愿系统&nbsp;&nbsp;&nbsp;&nbsp;
+            <button type="button" class="btn btn-success">添加</button>
+        </h4>
+    </a>
 
-<table class="easyui-datagrid" title="Basic DataGrid" style="width:700px;height:250px"
-       data-options="singleSelect:true,collapsible:true,url:'datagrid_data1.json',method:'get'">
-    <thead>
-    <tr>
-        <th data-options="field:'itemid',width:80">Item ID</th>
-        <th data-options="field:'productid',width:100">Product</th>
-        <th data-options="field:'listprice',width:80,align:'right'">List Price</th>
-        <th data-options="field:'unitcost',width:80,align:'right'">Unit Cost</th>
-        <th data-options="field:'attr1',width:250">Attribute</th>
-        <th data-options="field:'status',width:60,align:'center'">Status</th>
-    </tr>
-    </thead>
-</table>
+    <a th:each="wish:${wishList}" th:href="@{/index/wishInfo(id=${wish.id})}" class="list-group-item">
+        <h4 class="list-group-item-heading" th:text="${wish.title}">
+
+        </h4>
+        <p class="list-group-item-text"  th:text="${wish.content}">
+
+        </p>
+    </a>
+</div>
+<!-- 页面底部显示 -->
+<!-- 每页显示几条记录 -->
+<div id="bottomTool" class="row-fluid" >
+    <div class="span6" style="width:25%;;margin-right: 10px;">
+        <div class="dataTables_length" id="DataTables_Table_0_length">
+            <label>
+                每页8
+                <!--<select id="pageSize" onchange="research()"
+                        aria-controls="DataTables_Table_0" size="1" name="DataTables_Table_0_length">
+                    <option selected="selected" value="10">10</option>
+                    <option value="25">25</option>
+                    <option value="50">50</option>
+                    <option value="100">100</option>
+                </select>-->
+                条记录
+            </label>
+        </div>
+    </div>
+    <!-- 显示第 1 至 10 项记录，共 57 项 -->
+    <div class="span6" style="width:25%;" >
+        <div id="DataTables_Table_0_info" class="dataTables_info"><!--显示第 1 至 10 项记录，-->共 <span th:text="${wishCount}"></span> 项</div>
+    </div>
+    <!-- 第2页 -->
+    <div class="span6" style="width:30%;">
+        <div class="dataTables_paginate paging_bootstrap pagination">
+            <ul id="previousNext">
+                <li class="prev"><a id="previousPage" th:href="@{/index/main(turnType=previous,pageNum=${pageNumInt})}">← 上一页</a></li>
+
+                <li class="next"><a id="nextPage" th:href="@{/index/main(turnType=next,pageNum=${pageNumInt})}">下一页 → </a></li>
+            </ul>
+        </div>
+    </div>
+    <div id="page" style="float:left;">
+        <input id="pageNum" name="pageNum" onkeyup="value=value.replace(/[^0-9]+/,'')" th:value="${pageNumInt}"
+                style="width:50PX;margin-right:1px;"/>
+        <a href="javascript:turnTo()" class="ui-button ui-button-go">Go</a>
+    </div>
+</div>
+</form>
+<script>
+function turnTo(){
+    $("#form").submit();
+}
+</script>
 </body>
 </html>
